@@ -1,0 +1,15 @@
+[Unit]
+Description=Taskmanager FastAPI service
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/taskmanager/backend
+Environment=DATABASE_URL=postgresql+psycopg://taskmanager:taskmanager@localhost:5432/taskmanager
+ExecStart=/opt/taskmanager/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
