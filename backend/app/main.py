@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from typing import Generator
+from typing import Generator, List, Optional
 
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -37,9 +37,9 @@ class TaskCreate(BaseModel):
 
 
 class TaskUpdate(BaseModel):
-    title: str | None = Field(default=None, min_length=1, max_length=200)
-    description: str | None = Field(default=None, max_length=1000)
-    completed: bool | None = None
+    title: Optional[str] = Field(default=None, min_length=1, max_length=200)
+    description: Optional[str] = Field(default=None, max_length=1000)
+    completed: Optional[bool] = None
 
 
 class TaskResponse(BaseModel):
@@ -76,12 +76,12 @@ def create_tables() -> None:
 
 
 @app.get("/api/health")
-def health() -> dict[str, str]:
+def health() -> dict:
     return {"status": "ok"}
 
 
-@app.get("/api/tasks", response_model=list[TaskResponse])
-def list_tasks(db: Session = Depends(get_db)) -> list[Task]:
+@app.get("/api/tasks", response_model=List[TaskResponse])
+def list_tasks(db: Session = Depends(get_db)) -> List[Task]:
     return list(db.query(Task).order_by(desc(Task.created_at)).all())
 
 
