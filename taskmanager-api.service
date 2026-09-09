@@ -1,13 +1,15 @@
 [Unit]
 Description=Taskmanager FastAPI service
-After=network.target postgresql.service
+After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=simple
-User=www-data
-WorkingDirectory=/opt/taskmanager/backend
-Environment=DATABASE_URL=postgresql+psycopg://taskmanager:taskmanager@localhost:5432/taskmanager
-ExecStart=/opt/taskmanager/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000
+User=alexis
+Group=alexis
+WorkingDirectory=/home/alexis/taskmanager/backend
+EnvironmentFile=/etc/taskmanager/taskmanager.env
+ExecStart=/home/alexis/taskmanager/backend/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000
 Restart=always
 RestartSec=5
 

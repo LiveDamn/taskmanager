@@ -1,9 +1,4 @@
-SELECT 'CREATE ROLE taskmanager LOGIN PASSWORD ''taskmanager'''
+SELECT 'CREATE DATABASE "DB" OWNER alexis'
 WHERE NOT EXISTS (
-    SELECT FROM pg_roles WHERE rolname = 'taskmanager'
-)\gexec
-
-SELECT 'CREATE DATABASE taskmanager OWNER taskmanager'
-WHERE NOT EXISTS (
-    SELECT FROM pg_database WHERE datname = 'taskmanager'
+    SELECT FROM pg_database WHERE datname = 'DB'
 )\gexec
